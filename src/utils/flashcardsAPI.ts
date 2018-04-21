@@ -1,13 +1,17 @@
 import { AsyncStorage } from "react-native";
 import { decks } from "./seeds";
-import { Card, Decks, Deck } from "./types";
+import { Card, Decks, Deck, Cards } from "./types";
 import { v4 } from "uuid";
 
-// Initialize hardcoded data to app
-export const initializeData = async () => {
+/**
+ * Inicialize hardcoded data to app
+ */
+export const initializeData = async (): Promise<void> => {
   try {
-    const result = AsyncStorage.setItem("decks", JSON.stringify(decks));
-    return result;
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+    const result = await AsyncStorage.getItem("decks");
+    console.log(result);
+    return;
   } catch (error) {
     return error;
   }
@@ -45,13 +49,26 @@ export const saveDeckTitle = async (title: string): Promise<Decks> => {
   }
 };
 
+export const deleteDeck = async (deckTitle: string): Promise<Decks> => {
+  try {
+    const stringifiedDecks = await AsyncStorage.getItem("decks");
+    const decks = JSON.parse(stringifiedDecks);
+    delete decks[deckTitle];
+    AsyncStorage.setItem("decks", decks);
+    return decks;
+  } catch (error) {
+    return error;
+  }
+};
+
 /**
- * It doesn't exactly deletes the card but set the deleted property of a specific card to true
+ * It doesn't exactly deletes the card but set the deleted
+ * property of a specific card to true
  */
 export const deleteCardFromDeck = async (
   deckId: string,
   cardId: string
-): Promise<Decks> => {
+): Promise<Cards> => {
   try {
     const stringifiedDecks = await AsyncStorage.getItem("decks");
     const decks = JSON.parse(stringifiedDecks);
@@ -63,23 +80,15 @@ export const deleteCardFromDeck = async (
   }
 };
 
-export const deleteDeck = async (deckTitle: string) => {
-  try {
-    const stringifiedDecks = await AsyncStorage.getItem("decks");
-    const decks = JSON.parse(stringifiedDecks);
-    delete decks[deckTitle];
-    const result = AsyncStorage.setItem("decks", decks);
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const addCardToDeck = async (deckTitle: string, card: Card) => {
+export const addCardToDeck = async (
+  deckTitle: string,
+  card: Card
+): Promise<Cards> => {
   try {
     const deck = { [deckTitle]: card };
-    const result = AsyncStorage.mergeItem(deckTitle, JSON.stringify(deck));
-    return result;
+    await AsyncStorage.mergeItem(deckTitle, JSON.stringify(deck));
+    const result = await AsyncStorage.getItem("decks");
+    return JSON.parse(result);
   } catch (error) {
     return error;
   }
