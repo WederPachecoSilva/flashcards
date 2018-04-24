@@ -1,39 +1,48 @@
 import { StackNavigator } from "react-navigation";
-import DeckList from "./screens/DeckList";
+import DecksList from "./screens/DecksList";
 import DeckDetail from "./screens/DeckDetail";
 import AddCard from "./screens/AddCard";
 import AddDeck from "./screens/AddDeck";
 import CardDetail from "./screens/CardDetail";
 
-export default StackNavigator({
-  DeckList: {
-    screen: DeckList,
-    navigationOptions: {
-      title: "Deck list",
+export default StackNavigator(
+  {
+    DecksList: {
+      screen: DecksList,
+      navigationOptions: {
+        title: "CHOOSE A DECK",
+        headerTitleStyle: {
+          marginLeft: "auto",
+          marginRight: "auto",
+        },
+      },
+    },
+    DeckDetail: {
+      screen: DeckDetail,
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.deck.title}'s Deck`,
+      }),
+    },
+    AddCard: {
+      screen: AddCard,
+      navigationOptions: {
+        title: "ADD CARD",
+      },
+    },
+    AddDeck: {
+      screen: AddDeck,
+      navigationOptions: {
+        title: "ADD DECK",
+      },
+    },
+    CardDetail: {
+      screen: CardDetail,
+      navigationOptions: {
+        title: "CARD DETAIL",
+      },
     },
   },
-  DeckDetail: {
-    screen: DeckDetail,
-    navigationOptions: {
-      title: "deck detail",
-    },
-  },
-  AddCard: {
-    screen: AddCard,
-    navigationOptions: {
-      title: "add card",
-    },
-  },
-  AddDeck: {
-    screen: AddDeck,
-    navigationOptions: {
-      title: "add deck",
-    },
-  },
-  CardDetail: {
-    screen: CardDetail,
-    navigationOptions: {
-      title: "carad detail",
-    },
-  },
-});
+  {
+    headerMode: "screen",
+  }
+);
