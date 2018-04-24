@@ -18,7 +18,8 @@
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
+    "start":
+      "concurrently \"node api-server/server\" \"react-native-scripts start\"",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
@@ -29,7 +30,14 @@
   },
   "dependencies": {
     "@types/uuid": "^3.4.3",
+    "body-parser": "^1.18.2",
+    "clone": "^1.0.4",
+    "concurrently": "^3.5.1",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
     "expo": "^26.0.0",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
     "react": "16.3.0-alpha.1",
     "react-native": "0.54.0",
     "react-native-elements": "^0.19.1",
