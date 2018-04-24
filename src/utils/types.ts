@@ -15,5 +15,5 @@ export interface Deck {
 }
 
 export interface Decks {
-  [propName: string]: Deck;
+  [id: string]: Deck;
 }
