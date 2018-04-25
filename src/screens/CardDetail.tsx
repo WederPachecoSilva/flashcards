@@ -1,11 +1,15 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, AsyncStorage } from "react-native";
 import { getCardsByDeck } from "../utils/flashcardsAPI";
 import Container from "../components/primitives/Container";
 import Alert from "../components/primitives/Alert";
 import Button from "../components/primitives/Button";
 import QuestionCard from "../components/Cards/QuestionCard";
 import AnswerCard from "../components/Cards/AnswerCard";
+import {
+  clearLocalNotification,
+  setLocalNotification,
+} from "../utils/notification";
 
 function percentage(partialValue, totalValue) {
   const percentage = 100 * partialValue / totalValue;
@@ -29,6 +33,10 @@ class CardDetail extends React.Component<any, any> {
     await getCardsByDeck(deckId)
       .then(cards => this.setState({ cards }))
       .catch(err => this.setState({ hasError: true }));
+
+    const date = new Date();
+    AsyncStorage.setItem("LAST_QUIZZ_HOUR", JSON.stringify(date.getHours()));
+    clearLocalNotification().then(setLocalNotification);
   }
 
   handleNext = async () => {

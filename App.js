@@ -1,8 +1,10 @@
+// @ts-check
+
 import React from "react";
 import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 
-import { initializeData } from "./build/utils/flashcardsAPI";
-
+// import { initializeData } from "./build/utils/flashcardsAPI";
+import { setLocalNotification } from "./build/utils/notification";
 import Root from "./build/routes";
 
 // Disables annoying react's lifecycle deprecation warning in 16.3 minor semver
