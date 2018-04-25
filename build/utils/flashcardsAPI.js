@@ -1,82 +1,64 @@
-import { AsyncStorage } from "react-native";
-import { decks } from "./seeds";
-import { v4 } from "uuid";
-// Initialize hardcoded data to app
-export const initializeData = async () => {
-    try {
-        const result = AsyncStorage.setItem("decks", JSON.stringify(decks));
-        return result;
-    }
-    catch (error) {
-        return error;
-    }
+// android studio emulator
+const BASE_URL = "http://10.0.2.2:3001";
+export const getDecks = () => {
+    return fetch(BASE_URL + "/decks", {
+        headers: {
+            Authorization: "flashcards-app",
+        },
+        method: "GET",
+    }).then(res => res.json());
 };
-export const getDecks = async () => {
-    try {
-        const stringifiedDeck = await AsyncStorage.getItem("decks");
-        const decks = JSON.parse(stringifiedDeck);
-        return decks;
-    }
-    catch (error) {
-        return error;
-    }
+export const getDeck = (deckId) => {
+    return fetch(BASE_URL + "/deck/" + deckId, {
+        headers: {
+            Authorization: "flashcards-app",
+        },
+        method: "get",
+    }).then(res => res.json());
 };
-export const getDeck = async (deckId) => {
-    try {
-        const stringifiedDeck = await AsyncStorage.getItem("decks");
-        const decks = JSON.parse(stringifiedDeck);
-        return decks[deckId];
-    }
-    catch (error) {
-        return error;
-    }
+export const addDeck = (deck) => {
+    return fetch(BASE_URL + "/deck", {
+        headers: {
+            Authorization: "flashcards-app",
+            "Content-Type": "application/json",
+        },
+        method: "post",
+        body: JSON.stringify(deck),
+    }).then(res => res.json());
 };
-export const saveDeckTitle = async (title) => {
-    try {
-        const id = v4();
-        const deck = { [id]: { id, title, cards: [] } };
-        await AsyncStorage.mergeItem("decks", JSON.stringify(deck));
-        const result = await AsyncStorage.getItem("decks");
-        return JSON.parse(result);
-    }
-    catch (error) {
-        return error;
-    }
+export const deleteDeck = (deckId) => {
+    return fetch(BASE_URL + "/deck/" + deckId, {
+        headers: {
+            Authorization: "flashcards-app",
+            "Content-Type": "application/json",
+        },
+        method: "delete",
+        body: JSON.stringify(deckId),
+    }).then(res => res.json());
 };
-/**
- * It doesn't exactly deletes the card but set the deleted property of a specific card to true
- */
-export const deleteCardFromDeck = async (deckId, cardId) => {
-    try {
-        const stringifiedDecks = await AsyncStorage.getItem("decks");
-        const decks = JSON.parse(stringifiedDecks);
-        decks[deckId].cards[cardId].deleted = true;
-        await AsyncStorage.setItem("decks", decks);
-        return decks[deckId].cards;
-    }
-    catch (error) {
-        return error;
-    }
+export const getCardsByDeck = (deckId) => {
+    return fetch(BASE_URL + "/cards/" + deckId, {
+        headers: {
+            Authorization: "flashcards-app",
+        },
+        method: "get",
+    }).then(res => res.json());
 };
-export const deleteDeck = async (deckTitle) => {
-    try {
-        const stringifiedDecks = await AsyncStorage.getItem("decks");
-        const decks = JSON.parse(stringifiedDecks);
-        delete decks[deckTitle];
-        const result = AsyncStorage.setItem("decks", decks);
-        return result;
-    }
-    catch (error) {
-        return error;
-    }
+export const addCard = (deckId, card) => {
+    return fetch(BASE_URL + "/card/" + deckId, {
+        headers: {
+            Authorization: "flashcards-app",
+            "Content-Type": "application/json",
+        },
+        method: "post",
+        body: JSON.stringify(card),
+    }).then(res => res.json());
 };
-export const addCardToDeck = async (deckTitle, card) => {
-    try {
-        const deck = { [deckTitle]: card };
-        const result = AsyncStorage.mergeItem(deckTitle, JSON.stringify(deck));
-        return result;
-    }
-    catch (error) {
-        return error;
-    }
+export const deleteCard = (deckId, cardId) => {
+    return fetch(BASE_URL + "/card/" + deckId + "/" + cardId, {
+        headers: {
+            Authorization: "flashcards-app",
+        },
+        method: "delete",
+    }).then(res => res.json());
 };

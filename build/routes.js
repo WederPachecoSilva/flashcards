@@ -1,38 +1,44 @@
 import { StackNavigator } from "react-navigation";
-import DeckList from "./screens/DeckList";
+import DecksList from "./screens/DecksList";
 import DeckDetail from "./screens/DeckDetail";
 import AddCard from "./screens/AddCard";
 import AddDeck from "./screens/AddDeck";
 import CardDetail from "./screens/CardDetail";
 export default StackNavigator({
-    DeckList: {
-        screen: DeckList,
+    DecksList: {
+        screen: DecksList,
         navigationOptions: {
-            title: "Deck list",
+            title: "CHOOSE A DECK",
+            headerTitleStyle: {
+                marginLeft: "auto",
+                marginRight: "auto",
+            },
         },
     },
     DeckDetail: {
         screen: DeckDetail,
-        navigationOptions: {
-            title: "deck detail",
-        },
+        navigationOptions: ({ navigation }) => ({
+            title: `${navigation.state.params.deck.title}'s Deck`,
+        }),
     },
     AddCard: {
         screen: AddCard,
         navigationOptions: {
-            title: "add card",
+            title: "ADD CARD",
         },
     },
     AddDeck: {
         screen: AddDeck,
         navigationOptions: {
-            title: "add deck",
+            title: "ADD DECK",
         },
     },
     CardDetail: {
         screen: CardDetail,
         navigationOptions: {
-            title: "carad detail",
+            title: "CARD DETAIL",
         },
     },
+}, {
+    headerMode: "screen",
 });

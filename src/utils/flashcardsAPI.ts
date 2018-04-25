@@ -1,14 +1,15 @@
 import { v4 } from "uuid";
 import { Deck, Card } from "./types";
 
-const BASE_URL = "http://localhost:3001";
+// android studio emulator
+const BASE_URL = "http://10.0.2.2:3001";
 
 export const getDecks = (): Promise<Deck[]> => {
   return fetch(BASE_URL + "/decks", {
     headers: {
       Authorization: "flashcards-app",
     },
-    method: "get",
+    method: "GET",
   }).then(res => res.json());
 };
 
@@ -52,7 +53,7 @@ export const getCardsByDeck = (deckId: string): Promise<Card[]> => {
   }).then(res => res.json());
 };
 
-export const addCards = (deckId: string, card: Card): Promise<Card[]> => {
+export const addCard = (deckId: string, card: Card): Promise<Card[]> => {
   return fetch(BASE_URL + "/card/" + deckId, {
     headers: {
       Authorization: "flashcards-app",
@@ -63,10 +64,7 @@ export const addCards = (deckId: string, card: Card): Promise<Card[]> => {
   }).then(res => res.json());
 };
 
-export const deleteCards = (
-  deckId: string,
-  cardId: string
-): Promise<Card[]> => {
+export const deleteCard = (deckId: string, cardId: string): Promise<Card[]> => {
   return fetch(BASE_URL + "/card/" + deckId + "/" + cardId, {
     headers: {
       Authorization: "flashcards-app",

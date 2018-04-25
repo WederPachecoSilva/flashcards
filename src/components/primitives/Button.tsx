@@ -8,20 +8,36 @@ const Touchable = styled.TouchableOpacity`
   margin: 14px;
   padding: 4px 14px;
   border: 2px solid black;
+  border-color: ${props => (props.primary ? "white" : props.color)};
   border-radius: 5;
   justify-content: center;
   align-items: center;
 `;
 
 const Text = styled.Text`
-  color: black;
+  color: ${props => (props.primary ? "white" : props.color)};
   font-size: 30px;
 `;
 
-const Button = ({ title, onPress }) => (
-  <Touchable onPress={onPress}>
-    <Text>{title}</Text>
-  </Touchable>
-);
+interface Button {
+  title: string;
+  onPress: any;
+  color: string;
+  primary?: boolean;
+}
+
+const Button = (props: Button) => {
+  const { title, onPress, color, primary } = props;
+  return (
+    <Touchable {...props} onPress={onPress}>
+      {primary && (
+        <Text color={color} primary>
+          {title}
+        </Text>
+      )}
+      {!primary && <Text color={color}>{title}</Text>}
+    </Touchable>
+  );
+};
 
 export default Button;

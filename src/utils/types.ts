@@ -12,6 +12,7 @@ export interface Deck {
   id: string;
   title: string;
   cards: Card[];
+  deleted: boolean;
 }
 
 export interface Decks {

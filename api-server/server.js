@@ -57,8 +57,9 @@ app.get("/deck/:deckId", (req, res) => {
 });
 
 app.post("/deck", bodyParser.json(), (req, res) => {
+  const { body } = req;
   // @ts-ignore
-  decks.addDeck(req.token, req.body.deck).then(
+  decks.addDeck(req.token, body).then(
     data => res.send(data),
     error => {
       console.error(error);
@@ -96,10 +97,10 @@ app.get("/cards/:deckId", (req, res) => {
 });
 
 app.post("/card/:deckId", bodyParser.json(), (req, res) => {
-  const { card } = req.body;
+  // const { card } = req.body;
   const { deckId } = req.params;
   // @ts-ignore
-  decks.addCard(req.token, deckId, card).then(
+  decks.addCard(req.token, deckId, req.body).then(
     data => res.send(data),
     error => {
       console.error(error);

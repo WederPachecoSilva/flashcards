@@ -12,6 +12,7 @@ const defaultData = {
   [reactId]: {
     id: reactId,
     title: "React",
+    deleted: false,
     cards: [
       {
         id: v4(),
@@ -32,6 +33,7 @@ const defaultData = {
   [javascriptId]: {
     id: javascriptId,
     title: "JavaScript",
+    deleted: false,
     cards: [
       {
         id: v4(),
@@ -74,8 +76,8 @@ function getDecks(token) {
     let decks = getData(token);
     let keys = Object.keys(decks);
     let decksArr = keys.map(key => decks[key]);
-    res(decksArr);
-    console.log(decksArr);
+    const result = decksArr.filter(deck => !deck.deleted);
+    res(result);
   });
 }
 
@@ -84,7 +86,6 @@ function getDeck(token, deckId) {
     const decks = getData(token);
     const result = decks[deckId] ? decks[deckId] : {};
     res(result);
-    console.log(result);
   });
 }
 
@@ -92,30 +93,30 @@ function addDeck(token, deck) {
   return new Promise(res => {
     let decks = getData(token);
     let keys = Object.keys(decks);
+    decks[deck.id] = deck;
     let decksArr = keys.map(key => decks[key]);
     decksArr.push(deck);
     res(decksArr);
-    console.log(decksArr);
   });
 }
 
 function deleteDeck(token, deckId) {
   return new Promise(res => {
     let decks = getData(token);
-    let keys = Object.keys(decks);
-    let decksArr = keys.map(key => decks[key]);
-    let result = decksArr.filter(deck => deck.id !== deckId);
+    decks[deckId].deleted = true;
+    let decksIds = Object.keys(decks);
+    let decksArr = decksIds.map(id => decks[id]);
+    let result = decksArr.filter(deck => !deck.deleted);
     res(result);
-    console.log(result);
   });
 }
 
 function getCardsByDeck(token, deckId) {
   return new Promise(res => {
     const decks = getData(token);
+    const deck = decks[deckId];
     const cards = decks[deckId].cards.filter(card => !card.deleted);
     res(cards);
-    console.log(cards);
   });
 }
 
@@ -124,6 +125,7 @@ function addCard(token, deckId, card) {
     let decks = getData(token);
     decks[deckId].cards.push(card);
     const result = decks[deckId].cards;
+    console.log(result);
     res(result);
   });
 }
@@ -133,8 +135,8 @@ function deleteCard(token, cardId, deckId) {
     let decks = getData(token);
     decks[deckId].cards.deleted = true;
     const cards = decks[deckId].cards.filter(card => !card.deleted);
+
     res(cards);
-    console.log(cards);
   });
 }
 
