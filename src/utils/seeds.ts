@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { Decks } from "./types";
+import { Deck, Decks, Card, Cards } from "./types";
 
 const reactId = v4();
 const javascriptId = v4();
@@ -8,6 +8,7 @@ export const decks: Decks = {
   [reactId]: {
     id: reactId,
     title: "React",
+    deleted: false,
     cards: [
       {
         id: v4(),
@@ -28,6 +29,7 @@ export const decks: Decks = {
   [javascriptId]: {
     id: javascriptId,
     title: "JavaScript",
+    deleted: false,
     cards: [
       {
         id: v4(),
@@ -56,5 +58,3 @@ export const decks: Decks = {
     ],
   },
 };
-
-export const multipleChoice = {};
