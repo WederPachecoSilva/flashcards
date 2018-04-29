@@ -1,74 +1,108 @@
+import { AsyncStorage } from "react-native";
+import { decks } from "./seeds";
+import { Card, Decks, Deck, Cards } from "./types";
 import { v4 } from "uuid";
-import { Deck, Card } from "./types";
 
-// android studio emulator
-const BASE_URL = "http://10.0.2.2:3001";
-
-export const getDecks = (): Promise<Deck[]> => {
-  return fetch(BASE_URL + "/decks", {
-    headers: {
-      Authorization: "flashcards-app",
-    },
-    method: "GET",
-  }).then(res => res.json());
+/**
+ * Helper function to avoid repeating code
+ */
+const getItem = async (key: string) => {
+  const item = await AsyncStorage.getItem(key);
+  return JSON.parse(item);
 };
 
-export const getDeck = (deckId: string): Promise<Deck> => {
-  return fetch(BASE_URL + "/deck/" + deckId, {
-    headers: {
-      Authorization: "flashcards-app",
-    },
-    method: "get",
-  }).then(res => res.json());
+/**
+ * Inicialize hardcoded data to app
+ */
+export const initializeData = async (): Promise<void> => {
+  try {
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+  } catch (error) {
+    return error;
+  }
 };
 
-export const addDeck = (deck: Deck): Promise<Deck[]> => {
-  return fetch(BASE_URL + "/deck", {
-    headers: {
-      Authorization: "flashcards-app",
-      "Content-Type": "application/json",
-    },
-    method: "post",
-    body: JSON.stringify(deck),
-  }).then(res => res.json());
+export const getDecks = async (): Promise<Deck[]> => {
+  try {
+    const decksObj: Decks = await getItem("decks");
+    const decks = Object.values(decksObj);
+    return decks.filter(deck => !deck.deleted);
+  } catch (error) {
+    return error;
+  }
 };
 
-export const deleteDeck = (deckId: string): Promise<Deck[]> => {
-  return fetch(BASE_URL + "/deck/" + deckId, {
-    headers: {
-      Authorization: "flashcards-app",
-      "Content-Type": "application/json",
-    },
-    method: "delete",
-    body: JSON.stringify(deckId),
-  }).then(res => res.json());
+export const getDeck = async (deckId: string): Promise<Deck> => {
+  try {
+    const decks: Decks = await getItem("decks");
+    return decks[deckId];
+  } catch (error) {
+    return error;
+  }
 };
 
-export const getCardsByDeck = (deckId: string): Promise<Card[]> => {
-  return fetch(BASE_URL + "/cards/" + deckId, {
-    headers: {
-      Authorization: "flashcards-app",
-    },
-    method: "get",
-  }).then(res => res.json());
+export const addDeck = async (title: string): Promise<void> => {
+  try {
+    const id = v4();
+    const decks = await getItem("decks");
+    const deck: Deck = { id, title, deleted: false, cards: [] };
+    decks[deck.id] = deck;
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+  } catch (error) {
+    return error;
+  }
 };
 
-export const addCard = (deckId: string, card: Card): Promise<Card[]> => {
-  return fetch(BASE_URL + "/card/" + deckId, {
-    headers: {
-      Authorization: "flashcards-app",
-      "Content-Type": "application/json",
-    },
-    method: "post",
-    body: JSON.stringify(card),
-  }).then(res => res.json());
+/**
+ *  It doesn't exactly deletes the card but set the deleted
+ * property of a specific card to true
+ */
+export const deleteDeck = async (deckId: string): Promise<void> => {
+  try {
+    const decks: Decks = await getItem("decks");
+    decks[deckId].deleted = true;
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+  } catch (error) {
+    return error;
+  }
 };
 
-export const deleteCard = (deckId: string, cardId: string): Promise<Card[]> => {
-  return fetch(BASE_URL + "/card/" + deckId + "/" + cardId, {
-    headers: {
-      Authorization: "flashcards-app",
-    },
-    method: "delete",
-  }).then(res => res.json());
+export const getCardsByDeck = async (deckId: string): Promise<Card[]> => {
+  try {
+    const decks: Decks = await getItem("decks");
+    return decks[deckId].cards.filter(card => !card.deleted);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const addCardToDeck = async (
+  deckId: string,
+  card: Card
+): Promise<Cards> => {
+  try {
+    const decks: Decks = await getItem("decks");
+    decks[deckId].cards.push(card);
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * It doesn't exactly deletes the card but set the deleted
+ * property of a specific card to true
+ */
+export const deleteCardFromDeck = async (
+  deckId: string,
+  cardId: string
+): Promise<Cards> => {
+  try {
+    const decks: Decks = await getItem("decks");
+    decks[deckId].cards[cardId].deleted = true;
+    await AsyncStorage.setItem("decks", JSON.stringify(decks));
+    return decks[deckId].cards;
+  } catch (error) {
+    return error;
+  }
 };
