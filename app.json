@@ -1,6 +1,7 @@
 {
   "expo": {
     "sdkVersion": "26.0.0",
-    "name": "flashcards"
+    "name": "flashcards",
+    "entryPoint": "build/App"
   }
 }
