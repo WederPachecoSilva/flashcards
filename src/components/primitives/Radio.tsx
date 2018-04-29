@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Picker } from "react-native";
+//@ts-ignore
 import styled from "styled-components";
 
 const StyledPicker = styled.Picker`

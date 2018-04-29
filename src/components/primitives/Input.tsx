@@ -1,4 +1,5 @@
-import styled from "styled-components/native";
+//@ts-ignore
+import styled from "styled-components";
 
 const Input = styled.TextInput`
   border-radius: 5;

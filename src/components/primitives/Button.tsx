@@ -1,5 +1,7 @@
+//@ts-ignore
 import styled from "styled-components";
 import * as React from "react";
+
 const Touchable = styled.TouchableOpacity`
   background: ${props => (props.primary ? props.color : "white")};
 
