@@ -1,7 +1,18 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
+
+import { Card } from "../../utils/types";
 import Button from "../primitives/Button";
 import Container from "../primitives/Container";
+
+interface P {
+  card: Card;
+  handleCorrect(): void;
+  handleIncorrect(): void;
+  handleNext(): void;
+  score: string;
+  isLast: boolean;
+}
 
 const AnswerCard = ({
   card,
@@ -10,7 +21,7 @@ const AnswerCard = ({
   handleNext,
   score,
   isLast,
-}) => (
+}: P) => (
   <View style={styles.container}>
     <Text style={styles.big}>{card.answer}</Text>
     <Text style={styles.small}>Score {score}%</Text>
