@@ -7,7 +7,8 @@ This is an app based on Udacity's react course project. It uses AsyncStorage API
 First of all you need to clone this repo to have it in your local machine.
 In order to install all the packages needed you must have
 [node.js](www.nodejs.org) installed.
-You will also need an android emulator.
+You will also need an android and ios emulator.
+This app was only tested on android platform but it should run without problems on ios as well.
 After you make sure that you have node.js installed you will need to install all the dependency packages.
 To install all the packages you need and run this application follow these steps:
 
