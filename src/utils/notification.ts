@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native";
 import { Notifications, Permissions } from "expo";
 
-const NOTIFICATION_KEY = "flashcards-app";
+const NOTIFICATION_KEY = "flashcards:notification";
 
 export function clearLocalNotification() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY).then(
@@ -20,6 +20,7 @@ function createNotification() {
       sound: true,
       vibrate: true,
       sticky: false,
+      priority: "high",
     },
   };
 }
@@ -35,7 +36,9 @@ export function setLocalNotification() {
 
             let tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
-
+            tomorrow.setHours(10);
+            tomorrow.setMinutes(0);
+            //@ts-ignore
             Notifications.scheduleLocalNotificationAsync(createNotification(), {
               time: tomorrow,
               repeat: "day",

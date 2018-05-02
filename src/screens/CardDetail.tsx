@@ -8,10 +8,7 @@ import Alert from "../components/primitives/Alert";
 import Button from "../components/primitives/Button";
 import QuestionCard from "../components/Cards/QuestionCard";
 import AnswerCard from "../components/Cards/AnswerCard";
-import {
-  clearLocalNotification,
-  setLocalNotification,
-} from "../utils/notification";
+
 import { Cards } from "../utils/types";
 import { percentage } from "../utils/helpers";
 
@@ -55,9 +52,6 @@ class CardDetail extends React.Component<P, S> {
     } catch (error) {
       this.setState({ hasError: true });
     }
-
-    await clearLocalNotification();
-    await setLocalNotification();
   }
 
   handleNext = async () => {

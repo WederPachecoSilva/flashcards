@@ -16,6 +16,7 @@ class App extends React.Component {
       if (stringfiedDecks === null) {
         await initializeData();
       }
+      setLocalNotification();
     } catch (error) {}
   }
 
