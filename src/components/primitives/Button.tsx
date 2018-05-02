@@ -3,7 +3,15 @@ import styled from "styled-components";
 import * as React from "react";
 
 const Touchable = styled.TouchableOpacity`
-  background: ${props => (props.primary ? props.color : "white")};
+  background: ${props => {
+    if (props.disabled) {
+      return "grey";
+    } else if (props.primary) {
+      return props.color;
+    } else {
+      return "white";
+    }
+  }};
 
   width: 90%;
   height: 50px;
@@ -26,12 +34,14 @@ interface Button {
   onPress: any;
   color: string;
   primary?: boolean;
+  style?: any;
+  disabled?: boolean;
 }
 
 const Button = (props: Button) => {
-  const { title, onPress, color, primary } = props;
+  const { title, onPress, color, primary, disabled } = props;
   return (
-    <Touchable {...props} onPress={onPress}>
+    <Touchable {...props} onPress={disabled ? null : onPress}>
       {primary && (
         <Text color={color} primary>
           {title}

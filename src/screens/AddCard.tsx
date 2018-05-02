@@ -1,25 +1,37 @@
 import * as React from "react";
 import { View, Text, KeyboardAvoidingView } from "react-native";
 import { v4 } from "uuid";
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
-import { addCard } from "../utils/flashcardsAPI";
+import { addCardToDeck, getDeck } from "../utils/flashcardsAPI";
 import Input from "../components/primitives/Input";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 import Alert from "../components/primitives/Alert";
 import Radio from "../components/primitives/Radio";
-
-type Level = "easy" | "intermediate" | "hard";
+import { Deck } from "../utils/types";
 
 interface S {
-  level: Level;
   answer: string;
   question: string;
   error: boolean;
+  deck: Deck | {};
 }
 
-class AddCard extends React.Component<any, S> {
-  state: S = { level: "easy", question: "", answer: "", error: false };
+interface P {
+  navigation: NavigationScreenProp<
+    NavigationRoute<{ deckId: string }>,
+    { deckId: string }
+  >;
+}
+
+class AddCard extends React.Component<P, S> {
+  state = { question: "", answer: "", error: false, deck: {} };
+
+  async componentDidMount() {
+    const deck = await getDeck(this.props.navigation.state.params.deckId);
+    this.setState({ deck });
+  }
 
   changeQuention = (question: string) => {
     this.setState({ question });
@@ -29,12 +41,8 @@ class AddCard extends React.Component<any, S> {
     this.setState({ answer });
   };
 
-  changeLevel = (level: Level) => {
-    this.setState({ level });
-  };
-
-  submitCard = () => {
-    const { question, answer, level } = this.state;
+  submitCard = async () => {
+    const { question, answer } = this.state;
     const { deckId } = this.props.navigation.state.params;
 
     if (!question || !answer) {
@@ -43,13 +51,15 @@ class AddCard extends React.Component<any, S> {
     }
 
     const id = v4();
-    const card = { question, answer, id, level, deleted: false };
-    addCard(deckId, card);
-    this.props.navigation.navigate("DecksList");
+    const card = { question, answer, id, deleted: false };
+    await addCardToDeck(deckId, card);
+    const updatedDeck = await getDeck(deckId);
+    await this.setState({ deck: updatedDeck });
+    this.props.navigation.navigate("DeckDetail", { deck: this.state.deck });
   };
 
   render() {
-    const { error, question, answer, level } = this.state;
+    const { error, question, answer } = this.state;
     return (
       <Container>
         <Input
@@ -69,11 +79,6 @@ class AddCard extends React.Component<any, S> {
           underlineColorAndroid="transparent"
         />
         {error && !answer && <Alert>Answer field is required!</Alert>}
-        <Radio
-          choices={["easy", "intermediate", "hard"]}
-          onValueChange={this.changeLevel}
-          value={level}
-        />
         <Button
           primary
           color="#00008B"

@@ -13,13 +13,27 @@ interface P {
 const QuestionCard = ({ card, checkAnswer }: P) => (
   <View>
     <Text style={styles.text}>{card.question}</Text>
-    <Button color="blue" title="See Answer" onPress={checkAnswer} />
+    <Button
+      style={styles.button}
+      color="blue"
+      title="See Answer"
+      onPress={checkAnswer}
+    />
   </View>
 );
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   text: {
     fontSize: 25,
+    textAlign: "center",
+  },
+  button: {
+    marginRight: "auto",
+    marginLeft: "auto",
   },
 });
 

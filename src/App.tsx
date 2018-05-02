@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { registerRootComponent } from "expo";
 
 import { initializeData } from "./utils/flashcardsAPI";
 import { setLocalNotification } from "./utils/notification";
@@ -11,8 +12,6 @@ console.disableYellowBox = true;
 class App extends React.Component {
   async componentDidMount() {
     try {
-      setLocalNotification();
-      await AsyncStorage.clear();
       const stringfiedDecks = await AsyncStorage.getItem("decks");
       if (stringfiedDecks === null) {
         await initializeData();
@@ -25,4 +24,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default registerRootComponent(App);

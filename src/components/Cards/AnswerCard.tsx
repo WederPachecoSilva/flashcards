@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button as NativeButton } from "react-native";
 
 import { Card } from "../../utils/types";
 import Button from "../primitives/Button";
@@ -10,8 +10,8 @@ interface P {
   handleCorrect(): void;
   handleIncorrect(): void;
   handleNext(): void;
-  score: string;
   isLast: boolean;
+  answer: "none" | "correct" | "incorrect";
 }
 
 const AnswerCard = ({
@@ -19,35 +19,45 @@ const AnswerCard = ({
   handleCorrect,
   handleIncorrect,
   handleNext,
-  score,
   isLast,
+  answer,
 }: P) => (
-  <View style={styles.container}>
+  <Container>
     <Text style={styles.big}>{card.answer}</Text>
-    <Text style={styles.small}>Score {score}%</Text>
-    <Button primary color="green" title="Correct" onPress={handleCorrect} />
-    <Button primary color="red" title="Incorrect" onPress={handleIncorrect} />
+    <Button
+      disabled={answer === "none" ? false : true}
+      color="green"
+      title="Correct"
+      onPress={handleCorrect}
+      style={{ width: 300 }}
+      primary
+    />
+    <Button
+      disabled={answer === "none" ? false : true}
+      color="red"
+      title="Incorrect"
+      onPress={handleIncorrect}
+      style={{ width: 300 }}
+      primary
+    />
     <Button
       primary
       color="blue"
       title={isLast ? "Finish" : "Next"}
       onPress={handleNext}
+      style={{ width: 300 }}
     />
-  </View>
+  </Container>
 );
 
 const styles = StyleSheet.create({
-  small: {
-    fontSize: 20,
-    margin: 20,
-  },
   big: {
     fontSize: 25,
+    textAlign: "center",
+    marginBottom: 15,
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  break: {
+    marginTop: 8,
   },
 });
 

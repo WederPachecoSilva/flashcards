@@ -1,5 +1,7 @@
 import * as React from "react";
 import { View, Text, StyleSheet, AsyncStorage } from "react-native";
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
+
 import { getCardsByDeck } from "../utils/flashcardsAPI";
 import Container from "../components/primitives/Container";
 import Alert from "../components/primitives/Alert";
@@ -10,14 +12,31 @@ import {
   clearLocalNotification,
   setLocalNotification,
 } from "../utils/notification";
+import { Cards } from "../utils/types";
+import { percentage } from "../utils/helpers";
 
-function percentage(partialValue, totalValue) {
-  const percentage = 100 * partialValue / totalValue;
-  return percentage.toFixed(2);
+interface P {
+  navigation: NavigationScreenProp<
+    NavigationRoute<{ deckId: string }>,
+    { deckId: string }
+  >;
 }
 
-class CardDetail extends React.Component<any, any> {
-  state = {
+interface S {
+  hasError: boolean;
+  cards: Cards;
+  score: number;
+  numOfCorrects: number;
+  isQuestion: boolean;
+  isAnswer: boolean;
+  index: number;
+  isLast: boolean;
+  answer: "none" | "correct" | "incorrect";
+}
+
+class CardDetail extends React.Component<P, S> {
+  state: S = {
+    answer: "none",
     hasError: false,
     cards: [],
     score: 0,
@@ -29,25 +48,35 @@ class CardDetail extends React.Component<any, any> {
   };
 
   async componentDidMount() {
-    const { deckId } = this.props.navigation.state.params;
-    await getCardsByDeck(deckId)
-      .then(cards => this.setState({ cards }))
-      .catch(err => this.setState({ hasError: true }));
+    try {
+      const { deckId } = this.props.navigation.state.params;
+      const cards = await getCardsByDeck(deckId);
+      this.setState({ cards });
+    } catch (error) {
+      this.setState({ hasError: true });
+    }
 
-    const date = new Date();
-    AsyncStorage.setItem("LAST_QUIZZ_HOUR", JSON.stringify(date.getHours()));
-    clearLocalNotification().then(setLocalNotification);
+    await clearLocalNotification();
+    await setLocalNotification();
   }
 
   handleNext = async () => {
-    const { cards, index, isLast } = this.state;
+    const { cards, index, isLast, numOfCorrects, answer } = this.state;
     const { deckId } = this.props.navigation.state.params;
 
-    // checks if it is the last card
+    this.setState({ answer: "none" });
+
+    // Checks if it is the last card
     if (cards.length === index + 1) {
-      this.props.navigation.navigate("DecksList");
+      const score = percentage(numOfCorrects, cards.length);
+      await this.setState({ numOfCorrects: 0 });
+      this.props.navigation.navigate("QuizzResult", {
+        score,
+        card: cards[index],
+      });
     }
 
+    // Checks if it is going to the last card
     if (cards.length === index + 2) {
       this.setState({ isLast: true });
     }
@@ -63,16 +92,17 @@ class CardDetail extends React.Component<any, any> {
     this.setState({ isQuestion: false, isAnswer: true });
   };
 
-  handleCorrect = async () => {
-    await this.setState(prev => ({ numOfCorrects: prev.numOfCorrects + 1 }));
-    const score = percentage(this.state.numOfCorrects, this.state.index + 1);
-    this.setState({ score });
+  handleCorrect = () => {
+    this.setState(prev => ({
+      numOfCorrects: prev.numOfCorrects + 1,
+      answer: "correct",
+    }));
   };
 
-  handleIncorrect = async () => {
-    await this.setState(prev => ({ numOfCorrects: prev.numOfCorrects - 1 }));
-    const score = percentage(this.state.numOfCorrects, this.state.index + 1);
-    this.setState({ score });
+  handleIncorrect = () => {
+    this.setState(prev => ({
+      answer: "incorrect",
+    }));
   };
 
   render() {
@@ -84,6 +114,7 @@ class CardDetail extends React.Component<any, any> {
       isAnswer,
       score,
       index,
+      answer,
     } = this.state;
     const numOfCards = cards.length;
 
@@ -109,8 +140,8 @@ class CardDetail extends React.Component<any, any> {
               handleCorrect={this.handleCorrect}
               handleIncorrect={this.handleIncorrect}
               handleNext={this.handleNext}
-              score={score}
               isLast={isLast}
+              answer={answer}
             />
           )}
       </Container>
@@ -124,6 +155,8 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 5,
+    fontSize: 15,
+    marginTop: 5,
   },
 });
 

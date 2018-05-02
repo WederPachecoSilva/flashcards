@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
 import { getDecks, deleteDeck } from "../utils/flashcardsAPI";
 import { Decks } from "../utils/types";
@@ -18,15 +19,20 @@ interface S {
   decksIds: string[] | any[];
 }
 
-class DecksList extends React.Component<any, Decks | {}> {
+interface P {
+  navigation: NavigationScreenProp<NavigationRoute<{}>, {}>;
+}
+
+class DecksList extends React.Component<P, Decks | {}> {
   state = { decks: [], hasError: false };
 
-  componentDidMount() {
-    getDecks()
-      .then(decks => {
-        this.setState({ decks });
-      })
-      .catch(err => this.setState({ hasError: true }));
+  async componentDidMount() {
+    try {
+      const decks = await getDecks();
+      this.setState({ decks });
+    } catch (error) {
+      this.setState({ hasError: true });
+    }
   }
 
   render() {

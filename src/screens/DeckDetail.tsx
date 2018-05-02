@@ -1,14 +1,23 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
-import { Deck } from "../utils/types";
+import { Deck, Decks } from "../utils/types";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 import { deleteDeck } from "../utils/flashcardsAPI";
 
-class DeckDetail extends React.Component<any, {}> {
-  deleteDeck = id => {
-    deleteDeck(id);
+interface Params {
+  deck: Deck;
+}
+
+interface P {
+  navigation: NavigationScreenProp<NavigationRoute<Params>, Params>;
+}
+
+class DeckDetail extends React.Component<P, {}> {
+  deleteDeck = async id => {
+    await deleteDeck(id);
     this.props.navigation.navigate("DecksList");
   };
 
@@ -26,9 +35,7 @@ class DeckDetail extends React.Component<any, {}> {
               color="black"
               primary
               title="Start Quiz"
-              onPress={() =>
-                navigation.navigate("CardDetail", { deckId: id, index: 0 })
-              }
+              onPress={() => navigation.navigate("CardDetail", { deckId: id })}
             />
           )}
         <Button

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { v4 } from "uuid";
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
 import Container from "../components/primitives/Container";
 import Input from "../components/primitives/Input";
@@ -11,7 +12,11 @@ interface S {
   title: string;
 }
 
-class AddDeck extends React.Component<any, S> {
+interface P {
+  navigation: NavigationScreenProp<NavigationRoute<{}>, {}>;
+}
+
+class AddDeck extends React.Component<P, S> {
   state = { title: "" };
   handleInput = title => {
     this.setState({ title });
@@ -20,10 +25,7 @@ class AddDeck extends React.Component<any, S> {
   submitDeck = async () => {
     try {
       const { title } = this.state;
-      const id = v4();
-      const cards = [];
-      let deck = { id, title, cards, deleted: false };
-      await addDeck(deck);
+      await addDeck(title);
       this.props.navigation.navigate("DecksList");
     } catch (error) {
       alert("Sorry, something went wrong!");

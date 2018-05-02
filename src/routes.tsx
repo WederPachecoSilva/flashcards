@@ -4,6 +4,7 @@ import DeckDetail from "./screens/DeckDetail";
 import AddCard from "./screens/AddCard";
 import AddDeck from "./screens/AddDeck";
 import CardDetail from "./screens/CardDetail";
+import QuizzResult from "./screens/QuizzResult";
 
 export default StackNavigator(
   {
@@ -11,6 +12,7 @@ export default StackNavigator(
       screen: DecksList,
       navigationOptions: {
         title: "CHOOSE A DECK",
+        headerLeft: null,
         headerTitleStyle: {
           marginLeft: "auto",
           marginRight: "auto",
@@ -39,6 +41,17 @@ export default StackNavigator(
       screen: CardDetail,
       navigationOptions: {
         title: "CARD DETAIL",
+      },
+    },
+    QuizzResult: {
+      screen: QuizzResult,
+      navigationOptions: {
+        title: "RESULT",
+        headerLeft: null,
+        headerTitleStyle: {
+          marginLeft: "auto",
+          marginRight: "auto",
+        },
       },
     },
   },

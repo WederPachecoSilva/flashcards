@@ -70,7 +70,8 @@ export const deleteDeck = async (deckId: string): Promise<void> => {
 export const getCardsByDeck = async (deckId: string): Promise<Card[]> => {
   try {
     const decks: Decks = await getItem("decks");
-    return decks[deckId].cards.filter(card => !card.deleted);
+    const cards = decks[deckId].cards.filter(card => !card.deleted);
+    return cards;
   } catch (error) {
     return error;
   }
