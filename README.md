@@ -11,17 +11,17 @@ You will also need an android emulator.
 After you make sure that you have node.js installed you will need to install all the dependency packages.
 To install all the packages you need and run this application follow these steps:
 
-1 - Compile all typescript code into javascript:
-
-* `$ tsc`
-
-2 - Then install all dependencies:
+1 - Then install all dependencies:
 
 * `$ npm install`
 
 or:
 
 * `$ yarn install`
+
+2 - Compile all typescript code into javascript:
+
+* `$ tsc`
 
 3 - Then you need to run the server:
 
