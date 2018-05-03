@@ -18,7 +18,7 @@ To install all the packages you need and run this application follow these steps
 
 or:
 
-* `$ yarn install`
+* `$ yarn`
 
 2 - Compile all typescript code into javascript:
 
@@ -27,6 +27,8 @@ or:
 3 - Then you need to run the server:
 
 * `$ npm start`
+
+or:
 
 * `$ yarn start`
 
