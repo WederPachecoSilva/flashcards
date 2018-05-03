@@ -20,7 +20,7 @@ function createNotification() {
       sound: true,
       vibrate: true,
       sticky: false,
-      priority: "high",
+      priority: "high" as "high",
     },
   };
 }
@@ -38,7 +38,6 @@ export function setLocalNotification() {
             tomorrow.setDate(tomorrow.getDate() + 1);
             tomorrow.setHours(10);
             tomorrow.setMinutes(0);
-            //@ts-ignore
             Notifications.scheduleLocalNotificationAsync(createNotification(), {
               time: tomorrow,
               repeat: "day",

@@ -32,8 +32,8 @@ interface S {
 }
 
 class CardDetail extends React.Component<P, S> {
-  state: S = {
-    answer: "none",
+  state = {
+    answer: "none" as "none",
     hasError: false,
     cards: [],
     score: 0,
