@@ -91,9 +91,9 @@ class CardDetail extends React.Component<P, S> {
   };
 
   handleIncorrect = () => {
-    this.setState(prev => ({
+    this.setState({
       answer: "incorrect",
-    }));
+    });
   };
 
   render() {
