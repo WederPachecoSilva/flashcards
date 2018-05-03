@@ -12,7 +12,7 @@ This app was only tested on android platform but it should run without problems 
 After you make sure that you have node.js installed you will need to install all the dependency packages.
 To install all the packages you need and run this application follow these steps:
 
-1 - Then install all dependencies:
+1 - First install all dependencies:
 
 * `$ npm install`
 
