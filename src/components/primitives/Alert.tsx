@@ -1,5 +1,5 @@
 import * as React from "react";
-//@ts-ignore
+// @ts-ignore
 import styled from "styled-components";
 
 const Container = styled.View`

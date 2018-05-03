@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Button as NativeButton } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 import { Card } from "../../utils/types";
 import Button from "../primitives/Button";

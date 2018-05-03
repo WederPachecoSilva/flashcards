@@ -1,11 +1,10 @@
 import * as React from "react";
-import { View, Text, StyleSheet, AsyncStorage } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
 import { getCardsByDeck } from "../utils/flashcardsAPI";
 import Container from "../components/primitives/Container";
 import Alert from "../components/primitives/Alert";
-import Button from "../components/primitives/Button";
 import QuestionCard from "../components/Cards/QuestionCard";
 import AnswerCard from "../components/Cards/AnswerCard";
 
@@ -55,8 +54,7 @@ class CardDetail extends React.Component<P, S> {
   }
 
   handleNext = async () => {
-    const { cards, index, isLast, numOfCorrects, answer } = this.state;
-    const { deckId } = this.props.navigation.state.params;
+    const { cards, index, numOfCorrects } = this.state;
 
     this.setState({ answer: "none" });
 
@@ -66,7 +64,6 @@ class CardDetail extends React.Component<P, S> {
       await this.setState({ numOfCorrects: 0 });
       this.props.navigation.navigate("QuizzResult", {
         score,
-        card: cards[index],
       });
     }
 
@@ -106,7 +103,6 @@ class CardDetail extends React.Component<P, S> {
       cards,
       isQuestion,
       isAnswer,
-      score,
       index,
       answer,
     } = this.state;
@@ -155,13 +151,3 @@ const styles = StyleSheet.create({
 });
 
 export default CardDetail;
-
-// View de um baralho individual
-
-// View do quiz
-// exibe a pergunta do cartão
-// uma opção de visualizar a resposta (virar o cartão) clicando em Answer
-// um botão "Correto" para o usuário clicar caso ele tenha acertado a questão de acordo com a resposta que tinha em mente
-// um botão "Incorreto" para o usuário clicar caso ele tenha errado a questão de acordo com a resposta que tinha em mente
-// o número de cartões que faltam para terminar o quiz
-// exibe a porcentagem correta assim que o quiz é completado

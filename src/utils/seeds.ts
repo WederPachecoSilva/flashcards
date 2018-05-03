@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { Deck, Decks, Card, Cards } from "./types";
+import { Decks } from "./types";
 
 const reactId = v4();
 const javascriptId = v4();

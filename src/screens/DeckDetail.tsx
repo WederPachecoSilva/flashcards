@@ -1,8 +1,8 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
-import { Deck, Decks } from "../utils/types";
+import { Deck } from "../utils/types";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 import { deleteDeck } from "../utils/flashcardsAPI";

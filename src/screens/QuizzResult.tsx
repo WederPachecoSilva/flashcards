@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation/index";
 
 import { Card } from "../utils/types";
@@ -25,7 +25,7 @@ class QuizzResult extends React.Component<P, {}> {
   }
 
   render() {
-    const { card, score } = this.props.navigation.state.params;
+    const { score } = this.props.navigation.state.params;
     let message: string;
     if (score < 25) {
       message = "Keep training!";

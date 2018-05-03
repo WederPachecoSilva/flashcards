@@ -3,7 +3,6 @@ import { Text, StyleSheet, View } from "react-native";
 
 import { Card } from "../../utils/types";
 import Button from "../primitives/Button";
-import Container from "../primitives/Container";
 
 interface P {
   card: Card;

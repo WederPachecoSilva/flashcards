@@ -8,22 +8,22 @@ import {
 } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
-import { getDecks, deleteDeck } from "../utils/flashcardsAPI";
+import { getDecks } from "../utils/flashcardsAPI";
 import { Decks } from "../utils/types";
 import Alert from "../components/primitives/Alert";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 
 interface S {
-  decks: Decks | {};
-  decksIds: string[] | any[];
+  decks: Decks | any[];
+  hasError: boolean;
 }
 
 interface P {
   navigation: NavigationScreenProp<NavigationRoute<{}>, {}>;
 }
 
-class DecksList extends React.Component<P, Decks | {}> {
+class DecksList extends React.Component<P, S> {
   state = { decks: [], hasError: false };
 
   async componentDidMount() {

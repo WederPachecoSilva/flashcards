@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { AsyncStorage } from "react-native";
 import { registerRootComponent } from "expo";
 
 import { initializeData } from "./utils/flashcardsAPI";

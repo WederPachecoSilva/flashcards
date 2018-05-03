@@ -1,6 +1,5 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { v4 } from "uuid";
+import { Text, StyleSheet } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
 import Container from "../components/primitives/Container";

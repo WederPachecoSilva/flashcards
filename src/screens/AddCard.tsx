@@ -1,5 +1,4 @@
 import * as React from "react";
-import { View, Text, KeyboardAvoidingView } from "react-native";
 import { v4 } from "uuid";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
@@ -8,7 +7,6 @@ import Input from "../components/primitives/Input";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 import Alert from "../components/primitives/Alert";
-import Radio from "../components/primitives/Radio";
 import { Deck } from "../utils/types";
 
 interface S {
