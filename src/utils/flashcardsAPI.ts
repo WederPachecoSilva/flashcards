@@ -41,13 +41,14 @@ export const getDeck = async (deckId: string): Promise<Deck> => {
   }
 };
 
-export const addDeck = async (title: string): Promise<void> => {
+export const addDeck = async (title: string): Promise<Deck> => {
   try {
     const id = v4();
     const decks = await getItem("decks");
     const deck: Deck = { id, title, deleted: false, cards: [] };
     decks[deck.id] = deck;
     await AsyncStorage.setItem("decks", JSON.stringify(decks));
+    return deck;
   } catch (error) {
     return error;
   }
@@ -80,11 +81,12 @@ export const getCardsByDeck = async (deckId: string): Promise<Card[]> => {
 export const addCardToDeck = async (
   deckId: string,
   card: Card
-): Promise<Cards> => {
+): Promise<Card> => {
   try {
     const decks: Decks = await getItem("decks");
     decks[deckId].cards.push(card);
     await AsyncStorage.setItem("decks", JSON.stringify(decks));
+    return card;
   } catch (error) {
     return error;
   }

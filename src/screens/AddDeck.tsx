@@ -24,8 +24,8 @@ class AddDeck extends React.Component<P, S> {
   submitDeck = async () => {
     try {
       const { title } = this.state;
-      await addDeck(title);
-      this.props.navigation.navigate("DecksList");
+      const deck = await addDeck(title);
+      this.props.navigation.navigate("DeckDetail", { deck });
     } catch (error) {
       alert("Sorry, something went wrong!");
     }

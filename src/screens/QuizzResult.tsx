@@ -2,16 +2,17 @@ import * as React from "react";
 import { Text, StyleSheet } from "react-native";
 import { NavigationScreenProp, NavigationRoute } from "react-navigation/index";
 
-import { Card } from "../utils/types";
+import { Deck } from "../utils/types";
 import Container from "../components/primitives/Container";
 import Button from "../components/primitives/Button";
 import {
   clearLocalNotification,
   setLocalNotification,
 } from "../utils/notification";
+import { getDeck } from "../utils/flashcardsAPI";
 
 interface Params {
-  card: Card;
+  deckId: string;
   score: number;
 }
 
@@ -19,13 +20,26 @@ interface P {
   navigation: NavigationScreenProp<NavigationRoute<Params>, Params>;
 }
 
-class QuizzResult extends React.Component<P, {}> {
-  componentDidMount() {
-    clearLocalNotification().then(setLocalNotification);
+interface S {
+  deck: Deck | {};
+}
+
+class QuizzResult extends React.Component<P, S> {
+  state = { deck: {} };
+  async componentDidMount() {
+    try {
+      const { deckId } = this.props.navigation.state.params;
+      const deck = await getDeck(deckId);
+      await this.setState({ deck });
+      await clearLocalNotification();
+      await setLocalNotification();
+    } catch (error) {
+      return error;
+    }
   }
 
   render() {
-    const { score } = this.props.navigation.state.params;
+    const { score, deckId } = this.props.navigation.state.params;
     let message: string;
     if (score < 25) {
       message = "Keep training!";
@@ -38,6 +52,7 @@ class QuizzResult extends React.Component<P, {}> {
     } else {
       message = "Congratulation! You have mastered it!";
     }
+
     return (
       <Container>
         <Text style={styles.message}>{message}</Text>
@@ -45,8 +60,19 @@ class QuizzResult extends React.Component<P, {}> {
         <Text style={styles.score}>{score + "%"}</Text>
         <Button
           color={"blue"}
-          title="Back"
-          onPress={() => this.props.navigation.navigate("DecksList")}
+          title="Back to Deck"
+          onPress={() =>
+            this.props.navigation.navigate("DeckDetail", {
+              deck: this.state.deck,
+            })
+          }
+        />
+        <Button
+          color={"blue"}
+          title="Restart Quizz"
+          onPress={() =>
+            this.props.navigation.navigate("CardDetail", { deckId })
+          }
         />
       </Container>
     );

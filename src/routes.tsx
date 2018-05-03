@@ -21,9 +21,9 @@ export default StackNavigator(
     },
     DeckDetail: {
       screen: DeckDetail,
-      navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.deck.title}'s Deck`,
-      }),
+      navigationOptions: {
+        title: `DECK DETAIL`,
+      },
     },
     AddCard: {
       screen: AddCard,

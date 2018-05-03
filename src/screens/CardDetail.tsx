@@ -54,6 +54,7 @@ class CardDetail extends React.Component<P, S> {
   }
 
   handleNext = async () => {
+    const { deckId } = this.props.navigation.state.params;
     const { cards, index, numOfCorrects } = this.state;
 
     this.setState({ answer: "none" });
@@ -64,6 +65,7 @@ class CardDetail extends React.Component<P, S> {
       await this.setState({ numOfCorrects: 0 });
       this.props.navigation.navigate("QuizzResult", {
         score,
+        deckId,
       });
     }
 

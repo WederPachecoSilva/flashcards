@@ -47,17 +47,18 @@ class DecksList extends React.Component<P, S> {
             <Alert style={styles.alert}>No deck to choose</Alert>
           </Container>
         )}
-        {decks.map(deck => (
-          <TouchableOpacity
-            key={deck.id}
-            onPress={() => navigation.navigate("DeckDetail", { deck })}
-          >
-            <View style={styles.container}>
-              <Text style={styles.bigText}>{deck.title}</Text>
-              <Text style={styles.smallText}>{deck.cards.length} cards</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {decks.length > 0 &&
+          decks.map(deck => (
+            <TouchableOpacity
+              key={deck.id}
+              onPress={() => navigation.navigate("DeckDetail", { deck })}
+            >
+              <View style={styles.container}>
+                <Text style={styles.bigText}>{deck.title}</Text>
+                <Text style={styles.smallText}>{deck.cards.length} cards</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         <Button
           title="Add deck"
           onPress={() => navigation.navigate("AddDeck")}
